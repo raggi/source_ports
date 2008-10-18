@@ -4,7 +4,7 @@
 # __MARK__
 module SourcePorts
   class SelfInstaller
-    def initialize(dir, fetch_cmd = "git clone git://github.com/raggi/git_ports.git")
+    def initialize(dir, fetch_cmd = "git clone git://github.com/raggi/source_ports.git")
       @dir = dir
       Dir.mkdir(dir) unless File.directory? dir
       @fetch_cmd = fetch_cmd
@@ -13,7 +13,7 @@ module SourcePorts
     def install
       in_dir do
         system @fetch_cmd
-        Dir.chdir "git_ports" do
+        Dir.chdir "source_ports" do
           system "rake"
         end
       end
@@ -37,4 +37,4 @@ module SourcePorts
   end
 end
 
-# SourcePorts::SelfInstaller.new(ARGV.first || '/tmp/gitports_install').install.write_loaderr
+SourcePorts::SelfInstaller.new(ARGV.first || '/tmp/source_ports_install').install.write_loader
