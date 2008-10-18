@@ -29,8 +29,8 @@ module SourcePorts
       source_ports_path = File.join(@dir, 'source_ports', 'lib', 'source_ports')
       open(filename, 'w') do |f|
         f << <<-EORUBY
-require '#{source_ports_path}'
-SourcePorts.dir = #{@dir}
+require #{source_ports_path.inspect}
+SourcePorts.dir = #{@dir.inspect}
 SourcePorts.repositories << SourcePorts::Repository::GitHub.new
         EORUBY
       end
