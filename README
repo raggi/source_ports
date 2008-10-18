@@ -1,0 +1,108 @@
+source_ports
+    by James Tucker
+    sponsored by Mantissa Operations Ltd.
+    http://raggi.org
+    http://github.com/raggi/source_ports
+
+== DESCRIPTION:
+
+A generic from source port installation system written in ruby.
+
+== HISTORY:
+
+Explosive growth of git usage, particularly in the ruby community lead to the
+requirement for a software distribution platform supporting source
+repositories for tracking 'edge' code during the appropriate stages of
+development.
+
+During discussions on desires for additions to rubygems, and the idea of
+potentially rebuilding rubygems in a miniaturised form, I stumbled upon an
+idea to (ab)use existing code version management infrastructure as part of my
+normal library management routines.
+
+I later realised the extent of what I had built. By opening up the spec to
+allow more version control systems than just git, and by leaving the .port
+build configurations relatively agnostic I had built a generic deployment /
+software configuration platform.
+
+By adding new repositories, private or public, it is possible to utilise this
+platform as a full deployment and developer environment management solution.
+
+== FEATURES/PROBLEMS:
+
+* Supports as many platforms as ruby does!
+
+* FIXME (list of features or problems)
+
+== TODO:
+
+* Complete spec coverage - stab case went a little too far!
+* Add versioning support
+* Add support for gitosis repositories (with search?)
+* Project vendoring support
+* Add discovery of plugins / extensions / hooks
+* Add discovery of repositories
+
+== Mid Range TODO:
+
+Probably as plugins:
+* Add support for rubygems
+* Add support for macports
+* Add support for pkgsrc
+* Add support for freebsd ports
+* Add support for openbsd ports
+* Add support for packages for the ports / pkgsrc systems
+* Add support for aptitude
+* Add support for pacman
+* Add support for portage / emerge
+
+== Long Range TODO:
+
+* Add support for platform pre-builds
+  - .sh, .bat, maybe some static helpers
+  - add ruby build
+* Integrate into / around luis mingw scripts
+
+== SYNOPSIS:
+
+  sourceport install 'eventmachine'
+  
+  sourceport search 'bacon'
+
+  FIXME (code sample of usage)
+
+== REQUIREMENTS:
+
+* Ruby
+* /usr/bin/env # For web installs
+* Git # For web installs
+* Bacon # For specs - can be auto installed
+
+== INSTALL:
+
+* ruby -ropen-uri -e 'open("http://github.com/raggi/source_ports/tree/stable/install.rb?raw=true") { |f| eval(f) }'
+
+== LICENSE:
+
+(The MIT License)
+
+Copyright (c) 2008 James Tucker
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+'Software'), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
