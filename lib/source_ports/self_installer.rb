@@ -12,8 +12,8 @@ module SourcePorts
     def install
       in_dir do
         system @fetch_cmd
-        system @update_cmd
         Dir.chdir "source_ports" do
+          system @update_cmd
           system "rake"
         end
       end
