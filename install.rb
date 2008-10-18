@@ -25,6 +25,8 @@ module SourcePorts
       source_ports_path = File.join(@dir, 'source_ports', 'lib', 'source_ports')
       open(filename, 'w') do |f|
         f << "require '#{source_ports_path}'"
+        f << "SourcePorts.dir = #{@dir}"
+        f << "SourcePorts.repositories << SourcePorts::Repository::GitHub.new"
       end
     end
 
