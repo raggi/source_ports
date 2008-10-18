@@ -33,12 +33,21 @@ module SourcePorts
     :tree_manager, :loader, :installer,
     :repositories
   ]
+  # TODO probably these will just be writers, or at least some of them.
   class <<self; attr_accessor *Accessors; end
 
   self.version = '0.0.1'
   self.setup_require = true
   self.repositories = []
-  self.installer = Installer.new
+  def self.tree_manager
+    @tree_manager ||= TreeManager.new
+  end
+  def self.installer
+    @installer ||= Installer.new
+  end
+  def self.loader
+    @loader ||= Loader.new
+  end
 end
 
 extend SourcePorts::Require if SourcePorts.setup_require
