@@ -37,7 +37,7 @@ SourcePorts.loader = SourcePorts::Loader.new
 
 # eval(installer)
 
-# ruby -ropen-uri -e 'open("http://github.com/raggi/git_ports/tree/stable/install.rb?raw=true") { |f| eval(f) }'
+# ruby -ropen-uri -e 'open("http://github.com/raggi/source_ports/tree/stable/install.rb?raw=true") { |f| eval(f.read) }'
 
 # SourcePorts.installer.install 'bacon', 'chneukirchen'
 # require 'bacon'
