@@ -10,7 +10,7 @@ module SourcePorts
       @branch = branch
       Dir.mkdir(dir) unless File.directory? dir
       @fetch_cmd = "git clone git://github.com/raggi/source_ports.git"
-      @update_cmd = "git fetch && git checkout #{branch}"
+      @update_cmd = "git fetch && git checkout origin/#{branch}"
     end
 
     def install
