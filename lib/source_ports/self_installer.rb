@@ -1,14 +1,18 @@
 module SourcePorts
   class SelfInstaller
-    def initialize(dir, fetch_cmd = "git clone git://github.com/raggi/source_ports.git")
+    def initialize(dir, branch = "stable")
       @dir = dir
+      # TODO add to the config
+      @branch = branch
       Dir.mkdir(dir) unless File.directory? dir
-      @fetch_cmd = fetch_cmd
+      @fetch_cmd = "git clone git://github.com/raggi/source_ports.git"
+      @update_cmd = "git fetch && git checkout #{branch}"
     end
 
     def install
       in_dir do
         system @fetch_cmd
+        system @update_cmd
         Dir.chdir "source_ports" do
           system "rake"
         end
@@ -35,4 +39,4 @@ module SourcePorts
   end
 end
 
-SourcePorts::SelfInstaller.new(ARGV.first || '/tmp/source_ports_install').install.write_loader
+SourcePorts::SelfInstaller.new(ARGV.shift || '/tmp/source_ports_install', ARGV.shift || 'stable').install.write_loader
