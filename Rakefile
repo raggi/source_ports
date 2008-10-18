@@ -21,6 +21,7 @@ namespace :gen do
     open('install.rb', 'r+') do |file|
       line = file.readline until line =~ /# __MARK__/ rescue nil
       file << installer
+      file.truncate(file.pos)
     end
   end
   

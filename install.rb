@@ -45,4 +45,4 @@ SourcePorts.repositories << SourcePorts::Repository::GitHub.new
   end
 end
 
-SourcePorts::SelfInstaller.new(ARGV.shift || '/tmp/source_ports_install', ARGV.shift || 'stable').install.write_loader_loader
+SourcePorts::SelfInstaller.new(ARGV.shift || '/tmp/source_ports_install', ARGV.shift || 'stable').install.write_loader
