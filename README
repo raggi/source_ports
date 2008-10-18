@@ -28,6 +28,132 @@ software configuration platform.
 By adding new repositories, private or public, it is possible to utilise this
 platform as a full deployment and developer environment management solution.
 
+== The Big Idea:
+
+At the moment I'm working through feature collection. I want to keep the native 
+features as light as possible. To this end, support for plugin discovery is quite
+important. To this end, the ideas in this section, and indeed the whole project
+are very much open for discussion. If you have any input, I really want to hear it.
+
+Initially I was looking at ruby packages. Ruby packages have quite a complex, but also
+very capable package manager, RubyGems. RubyGems has many strengths introduced by it's
+gemspec configurations. In some ways, I want to avoid this design to some extent.
+
+The first build of this system, such as it was, allowed me to efficiently manage
+'edge' code from github. I toyed with an installer idea that came from _why's ruby
+balloons. It all felt so capable.
+
+So now I'm heading into trying to do more general code and build management. This
+domain leads to a thought of massive platform support and crazy configurations.
+Indeed it is a complex area, this system aims to skip a lot of this intricate knowledge.
+The idea is to use the plugin system to handle many repositories, with varying collection / installation methods.
+Both 'ports' and 'repositories' just implement a particular api enabling them to be 
+installed, version controlled, and uninstalled.
+
+For developers, this should provide the ability to very easily track and test 
+multiple versions of their software against multiple versions of their dependent
+libraries with no effort. Eventually there may be some repository which merges
+searches on platform specific repositories to provide easy installation of differing
+package name conventions across platforms, however that is not directly in the scope
+of this project.
+
+For users this project could only provide some level of agnostic behaviour across
+platforms, however, as it is not directly carrying build files for any specific
+projects, it will never directly provide specific software builds for it's users
+until some source ports specific repository is made.
+
+Eventually the system should be able to come as close as reasonably possible to bootstrap
+it's own dependencies on a wide range of platforms. The goal is to be able to boostrap
+a working library set from a native build right up to installing app level library components.
+
+This system will not deal with code or data transports directly. This has been 
+effectively covered in many ways in many other projects and can be re-used with more than
+adequate efficiency for delivering and/or fetching program data or source.  Instead
+the various repository implementations should provide access to perform the general
+operations of fetching (if necessary) and installing (and configuring if necessary) software.
+
+With regard to Ruby. This system is built out of ruby, and as a consequence will natively
+carry some functionality to import libraries directly from the delivered packages.
+If I receive patches for other languages, I will more than happily include them, but hooks
+via plugins are preferred so that maintenance can be handled by a separately managed group
+of domain experts for that language.
+
+== Discussion Logs (FAQ?):
+
+17:06 Pistos: raggi: So you didn't go with Fast Application Resource Tool, I see.
+17:07 raggi: hehe, no
+
+18:02 Pistos: raggi: Ha ha, I like your == INSTALL:  :)
+18:02 raggi: :)
+18:02 raggi: sudo reqd often atm
+
+18:02 Pistos: raggi: Okay, so... what exactly does this search:
+18:02 Pistos: sourceport search 'bacon'
+18:03 raggi: i haven't done the bin yet
+18:04 raggi: so it's ruby -rsource_ports -e "SourcePorts.repositories.each { |r| y r.search('bacon') }"
+
+18:03 Pistos: So... do people download sourceport recipes or something?
+18:04 raggi: Pistos: the recipe stuff should be in the repos
+
+18:04 Pistos: Okay, where are the repositories defined?  :)
+18:04 Pistos looks.
+18:04 Pistos: Like this?  http://github.com/raggi/source_ports/tree/master/lib/source_ports/repository/git_hub.rb
+18:05 raggi: Pistos: see manual_test.rb
+
+18:05 Pistos: Okay, so the sourceports gem will ship with repo hosts predefined?
+18:06 raggi: some of them
+18:06 raggi: eventually, I'll ship them out into plugins
+
+18:06 Pistos: Does it hit the repo host on each search?
+18:06 raggi: yeah
+18:06 Pistos: Hmkay.
+18:06 raggi: github are probably gunna hate me
+18:06 raggi: well, the thing is
+18:06 Pistos: heh
+18:06 raggi: that's on a per-repo basis
+18:07 raggi: so, i'm thinking of adding like a pkgsrc repo, for example
+18:07 raggi: and that would be linked to local search stuff
+18:07 raggi: before i work in any of that, i need to sort out scope and version selectors so that local packages don't clobber ruby ones
+18:08 raggi: but again, that'll probably get pushed out to plugins
+
+18:10 raggi: mojombo: i've started a source ports system, atm, I'm prototyping a whole pile of it based on git and github
+18:11 raggi: thought you guys might be interested
+18:11 mojombo: raggi: interesting. tell me more
+18:11 raggi: mojombo: http://github.com/raggi/source_ports
+18:11 raggi: the stab case works by abusing git for versioning and transport
+18:12 raggi: the idea will eventually be, to integrate with lots of SCMs and platform plugins, to provide a source repo based ports system, aswell as a package manager integration system
+18:12 raggi: it's trivial to add repository subclasses to represent, say, pkgsrc or portage
+18:14 mojombo: neat!
+18:14 raggi: also, anything that doesn't have a build in the original source repo, could be easily meta-packaged by adding a local repo with a build file in it
+18:14 mojombo: I like your installation procedure. =)
+18:14 raggi: ;)
+
+18:15 mojombo: so you're thinking of this as a rubygems replacement (so to speak)?
+18:15 raggi: originally, that's what it was for
+18:15 raggi: but it's actually capable of far more
+18:16 raggi: because repositories can hold any old thing and build any thing
+
+18:16 mojombo: where does it store the downloaded code?
+18:16 raggi: at the moment, that's still weak, just in a single dir under the installation directory (defaults to /tmp/source_ports_install atm)
+18:16 raggi: i need to add version and scope / repository selectors for that stuff
+18:16 raggi: i'm still deciding how to handle that exactly
+
+18:17 mojombo: do you manually add load paths in ruby then?
+18:17 mojombo: or do you have something that overrides `require`
+18:17 raggi: at the moment, for ruby stuff i cheat
+18:17 raggi: yes, there's a require override
+18:17 raggi: i use the lib/project_name convention only for ruby at the moment
+18:17 raggi: i'm going ot add a set of wrappers to steal info out of gemspecs
+18:17 raggi: and a repo to install rubygems
+18:19 raggi: i also want simple support for vendoring / local / app specific installs and source trees
+18:20 mojombo: cool. this looks promising
+
+18:20 mojombo: you should write some more docs about usage
+- here they are, kinda...
+
+18:20 raggi: i'm really interested to collect design input at the moment
+18:22 raggi: particularly wrt handling of platforms (ideally outside the core project itself), versions (probably archive out non-edge versions to another dir), and scope selectors (splitting project locations by language libraries, etc)
+
 == FEATURES/PROBLEMS:
 
 * Supports as many platforms as ruby does!
