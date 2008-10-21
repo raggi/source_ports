@@ -1,4 +1,7 @@
 #!/usr/bin/env rake
+require 'rake'
+require 'rake/clean'
+require 'rake/rdoctask'
 
 task :default => :build
 task :default => :spec
@@ -48,5 +51,23 @@ namespace :git do
     task :stable do
       sh 'git push origin HEAD:refs/heads/stable'
     end
+  end
+end
+
+Rake::RDocTask.new do |rd|
+  rd.title = 'source_ports'
+  rd.rdoc_dir = 'rdoc'
+  rd.main = "README.rdoc"
+  rd.rdoc_files.include(rd.main, "lib/**/*.rb", 'install.rb')
+end
+task :clobber => :clobber_rdoc
+
+desc 'Generate and open documentation'
+task :docs => :rdoc do
+  case RUBY_PLATFORM
+  when /darwin/       ; sh 'open rdoc/index.html'
+  when /mswin|mingw/  ; sh 'start rdoc\index.html'
+  else 
+    sh 'firefox rdoc/index.html'
   end
 end
