@@ -5,6 +5,8 @@ HELP = <<-HELP
   #{$0} [command]
     install   - install port by name
     uninstall - uninstall port by name
+    search    - search all repositories for the port
+    help      - this dialog
 
 HELP
 

@@ -43,6 +43,7 @@ SourcePorts.repositories << SourcePorts::Repository::GitHub.new
       sp_path = File.join(@dir, 'source_ports', 'bin', 'sp')
       require 'fileutils'
       FileUtils.cp sp_path, inst_path
+      File.chmod 755, inst_path
       self
     end
 
