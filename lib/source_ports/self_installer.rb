@@ -36,10 +36,10 @@ SourcePorts.repositories << SourcePorts::Repository::GitHub.new
     def write_binfile
       require 'rbconfig'
       inst_path = File.join(Config::CONFIG['bindir'], 'sp')
-      in_dir do
-        require 'fileutils'
-        FileUtils.cp File.join('bin', 'sp'), inst_path
-      end
+      sp_path = File.join(@dir, 'source_ports', 'bin', 'sp')
+      require 'fileutils'
+      FileUtils.cp sp_path, inst_path
+      self
     end
 
     def in_dir
