@@ -1,6 +1,8 @@
 module SourcePorts
   class TreeCreateError < StandardError
+    attr_accessor :dir
     def initialize(dir)
+      @dir = dir
       super("Could not create #{dir} for use as the SourcePorts tree")
     end
   end
@@ -29,8 +31,7 @@ module SourcePorts
   end
 
   Accessors = [
-    :version, :setup_require, :dir,
-    :tree_manager, :loader, :installer,
+    :version, :setup_require, :dir, :tree_manager, :loader, :installer,
     :repositories
   ]
   # TODO probably these will just be writers, or at least some of them.

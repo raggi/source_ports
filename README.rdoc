@@ -191,9 +191,9 @@ Probably as plugins:
 
 == SYNOPSIS:
 
-  sourceport install 'eventmachine'
+  sp install 'eventmachine'
   
-  sourceport search 'bacon'
+  sp search 'bacon'
 
   FIXME (code sample of usage)
 

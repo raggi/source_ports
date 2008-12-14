@@ -30,7 +30,23 @@ describe 'SourcePorts::Config hash saving' do
   end
   
   after do
-    File.delete(@config_file) if File.exists? @config_file
+    if File.exists? @config_file
+      File.chmod 0700, @config_file
+      File.delete(@config_file)
+    end
+  end
+  
+  should 'not be saveable if the file is not writable' do
+    File.chmod 0000, @config_file
+    @config.should.not.be.saveable?
+  end
+  
+  should 'raise a NonWritableConfigException if save is called when not saveable' do
+    File.chmod 0000, @config_file
+    @config.should.not.be.saveable?
+    should.raise(SourcePorts::Config::NonWritableConfigException) do
+      @config.save
+    end
   end
   
   should 'write the data in YAML serialized form' do

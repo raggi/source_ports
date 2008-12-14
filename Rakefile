@@ -10,6 +10,10 @@ task :release => [:'git:push', :'git:merge:stable']
 
 task :build => :'gen:install'
 
+task :install => :build do
+  sh 'sudo ruby install.rb'
+end
+
 namespace :gen do
   
   # TODO use git ls-tree or whatever to do this using repo knowledge.
@@ -19,6 +23,7 @@ namespace :gen do
     warn "Looks like it's time to rebuild install.rb `rake gen:install`"
   end
   
+  desc 'regenerate install.rb from self_installer.rb'
   task :install do
     installer = File.read('lib/source_ports/self_installer.rb')
     open('install.rb', 'r+') do |file|

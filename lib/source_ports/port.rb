@@ -43,14 +43,14 @@ class SourcePorts::Port
   def build(args = [])
     return unless can_build?
     in_port_dir do
-      config = Config.new('.gitport')
+      config = Config.new('.source_ports_build')
       system "#{config[:build]} #{args.join(' ')}" if config[:build]
     end
   end
 
   def can_build?
     in_port_dir do
-      return false unless File.exists?('.gitport')
+      return false unless File.exists?('.source_ports_build')
     end
   end
 

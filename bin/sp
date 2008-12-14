@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+
+HELP = <<-HELP
+
+  #{$0} [command]
+    install   - install port by name
+    uninstall - uninstall port by name
+
+HELP
+
+autoload :SourcePorts, 'source_ports'
+
+case ARGV.shift
+when 'install'
+  SourcePorts.installer.install ARGV.shift
+when 'uninstall'
+  SourcePorts.installer.uninstall ARGV.shift
+when 'search'
+  SourcePorts::Repository::GitHub.new.search ARGV.shift
+when 'help'
+  puts HELP
+  exit
+else
+  abort HELP
+end

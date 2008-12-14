@@ -1,22 +1,38 @@
-class SourcePorts::Config < Hash
+require 'yaml'
 
-  def initialize(config_path, *args)
-    @config_path = config_path
+class SourcePorts::Config < Hash
+  class NonWritableConfigException < Exception
+    attr_accessor :config
+    def initialize(config)
+      @config = config
+      super("Could not save configuration to #{config.path}, file is not writable")
+    end
+  end
+
+  attr_accessor :path
+
+  def initialize(path, *args)
+    @path = path
     super(*args)
   end
 
-  def path=(path)
-    @config_path = path
-  end
-
   def load
-    self.replace open(@config_path) { |f| YAML.load f }
+    self.replace open(@path) { |f| YAML.load f }
   end
 
   def save
-    open(@config_path, 'w+') do |file|
+    raise NonWritableConfigException, self unless saveable?
+    open(@path, 'w+') do |file|
       file.write YAML.dump(self)
     end
+  end
+  
+  def saveable?
+    File.writable? @path
+  end
+  
+  def inspect
+    YAML.dump(self).strip
   end
 
 end

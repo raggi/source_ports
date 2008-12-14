@@ -30,6 +30,16 @@ SourcePorts.dir = #{@dir.inspect}
 SourcePorts.repositories << SourcePorts::Repository::GitHub.new
         EORUBY
       end
+      self
+    end
+    
+    def write_binfile
+      require 'rbconfig'
+      inst_path = File.join(Config::CONFIG['bindir'], 'sp')
+      in_dir do
+        require 'fileutils'
+        FileUtils.cp File.join('bin', 'sp'), inst_path
+      end
     end
 
     def in_dir
@@ -41,4 +51,4 @@ SourcePorts.repositories << SourcePorts::Repository::GitHub.new
   end
 end
 
-SourcePorts::SelfInstaller.new(ARGV.shift || '/tmp/source_ports_install', ARGV.shift || 'stable').install.write_loader
+SourcePorts::SelfInstaller.new(ARGV.shift || '/tmp/source_ports_install', ARGV.shift || 'stable').install.write_loader.write_binfile
